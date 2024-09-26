@@ -23,7 +23,7 @@ public class Physics : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
             rb.AddExplosionForce(500,
-                transform.position + new Vector3(0, -1, 0), -1);
+                transform.position + new Vector3(0, -1, 1), -1);
 
     }
 }
