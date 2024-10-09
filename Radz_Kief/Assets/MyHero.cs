@@ -4,21 +4,34 @@ using UnityEngine;
 
 public class MyHero : MonoBehaviour
 {
+    public GameObject snowBallCloneTemplate;
     Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-      animator =  GetComponent<Animator>();  
+        animator = GetComponent<Animator>();
+        if (animator == null)
+            print("Could not find Animator Component");
+        else
+            print("Animator Component found");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        animator.SetBool("isRunning", false);
+
+            if (Input.GetMouseButtonDown(0))
+        {
+            GameObject newSnowballGO = Instantiate(snowBallCloneTemplate, transform.position + transform.forward + Vector3.up, Quaternion.identity);
+            SnowballScript myNewSnowball = newSnowballGO.GetComponent<SnowballScript>();
+            myNewSnowball.throwSnowball(transform);
+        }
+            if (Input.GetKey(KeyCode.W))
 
         {
             transform.position += transform.forward * Time.deltaTime;
-            animator.SetBool("Is Running", true);
+            animator.SetBool("isRunning", true);
 
 
         }
@@ -37,5 +50,21 @@ public class MyHero : MonoBehaviour
         if (Input.GetKey(KeyCode.E))
             transform.position += Vector3.right * Time.deltaTime;
     }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print(collision.gameObject.name);
+
+
+
+        footballScript myFootball = collision.gameObject.GetComponent<footballScript>();
+        if (myFootball != null)
+        {
+            myFootball.Kick();
+        }
+
+    }
 }
+
  
